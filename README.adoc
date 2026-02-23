@@ -1,32 +1,32 @@
-= Java Archetype
+= Java CLI Archetype
 :toc:
 :toc-placement: preamble
 :sectanchors:
-:groupId: io.github.oliviercailloux
+:groupId: com.leeharkness
 :artifactId: java-archetype
 :repository: {artifactId}
 
-image:https://travis-ci.com/oliviercailloux/{repository}.svg?branch=master["Build Status", link="https://travis-ci.com/oliviercailloux/{repository}"]
-image:https://maven-badges.herokuapp.com/maven-central/{groupId}/{artifactId}/badge.svg["Artifact on Maven Central", link="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22{groupId}%22%20a%3A%22{artifactId}%22"]
-
-A simple maven https://maven.apache.org/guides/introduction/introduction-to-archetypes.html[archetype] with reasonable defaults for quickly starting modern Java projects.
+A Maven https://maven.apache.org/guides/introduction/introduction-to-archetypes.html[archetype] specifically designed for creating modern Java CLI applications with reasonable defaults and essential dependencies.
 
 == Usage
 
-* Type `mvn archetype:generate -DarchetypeGroupId=io.github.oliviercailloux -DarchetypeArtifactId=java-archetype`.
+=== Quick Start (Local Archetype)
+
+If you have this archetype locally (e.g., cloned from Git), use:
+
+* Type `mvn archetype:generate -DarchetypeGroupId=com.leeharkness -DarchetypeArtifactId=java-archetype -DarchetypeVersion=0.0.14-SNAPSHOT`.
 * Enter your desired `groupId` and `artifactId`, press enter to accept the suggested package name, enter to confirm.
 ** You have to change the suggested package name if the default one has invalid characters, such as hyphens! (Due to a https://issues.apache.org/jira/browse/ARCHETYPE-490[bug] in Maven archetypes, it seems difficult to support this use case. Please consider up-voting the bug, or commenting if you know anything relevant.)
 * Your project gets created in a subfolder of your current position, named from your `artifactId`.
 
-=== Other usages
+=== Non-Interactive Usage
 
-* Use `org.apache.maven.plugins:maven-archetype-plugin:3.2.1:generate` instead of `archetype:generate` to use a specific (possibly more recent) version of the https://search.maven.org/artifact/org.apache.maven.plugins/maven-archetype-plugin[`archetype`] plugin
-* `mvn archetype:generate -DarchetypeGroupId=io.github.oliviercailloux -DarchetypeArtifactId=java-archetype -DinteractiveMode=false -DgroupId=mygroupid -DartifactId=myartifactid` also indicates the desired group and artifact ids and remove the prompts.
+* `mvn archetype:generate -DarchetypeGroupId=com.leeharkness -DarchetypeArtifactId=java-archetype -DarchetypeVersion=0.0.14-SNAPSHOT -DinteractiveMode=false -DgroupId=mygroupid -DartifactId=myartifactid` also indicates the desired group and artifact ids and removes the prompts.
 
 === From Eclipse
 Eclipse looks at your local archetype catalog. You need to make this archetype appear there.
 
-* Invoke this archetype using one of the commands above. Maven will download it in your local repository (you should now see it under `~/.m2/repository/io/github/oliviercailloux/`).
+* Invoke this archetype using one of the commands above. Maven will download it in your local repository (you should now see it under `~/.m2/repository/com/leeharkness/`).
 * `mvn archetype:crawl -Dcatalog=/home/username/.m2/archetype-catalog.xml` asks Maven to create (or update) your local archetype catalog (http://maven.40175.n5.nabble.com/archetype-catalog-xml-location-archetype-crawl-versus-archetype-generate-td113741.html[more] https://issues.apache.org/jira/browse/ARCHETYPE-142[info]).
 * In Eclipse: `File` / `New` / `Maven Project`, select this archetype.
 
@@ -34,29 +34,72 @@ Eclipse looks at your local archetype catalog. You need to make this archetype a
 The following procedure uses the remote archetype catalog instead of the local one. The drawback is that it takes about 15 seconds each time you want to use this archetype, as Eclipse downloads the (huge) remote archetype catalog again each time. (Tested with Eclipse Neon, Oxygen and Photon.)
 
 * `Window` / `Preferences` / `Maven` / `Archetypes` / `Add Remote Catalog…`, give it the url http://repo1.maven.org/maven2/archetype-catalog.xml, Description: Remote archetypes catalog.
-* `File` / `New` / `Maven Project`, type `cailloux` in the filter box. Select this archetype.
+* `File` / `New` / `Maven Project`, type `leeharkness` in the filter box. Select this archetype.
 
-Instead of using the Maven local or remote archetypes catalog as indicated above, you may prefer the `Nexus Indexer`: `File` / `New` / `Maven Project`, select `Nexus Indexer` as a catalog, type `cailloux` in the filter box. Select this archetype. (Tested under Eclipse Oxygen.) (On my install nothing appeared under `Nexus Indexer`, by default. Follow link:Nexus%20Indexer%20from%20Eclipse.adoc[this] to solve that problem.)
+Instead of using the Maven local or remote archetypes catalog as indicated above, you may prefer the `Nexus Indexer`: `File` / `New` / `Maven Project`, select `Nexus Indexer` as a catalog, type `leeharkness` in the filter box. Select this archetype. (Tested under Eclipse Oxygen.) (On my install nothing appeared under `Nexus Indexer`, by default. Follow link:Nexus%20Indexer%20from%20Eclipse.adoc[this] to solve that problem.)
 
-== Generated projects
-Projects generated from this archetype have the following characteristics.
+== Generated Projects
+Projects generated from this archetype have the following characteristics:
 
-* The https://github.com/oliviercailloux/java-archetype/blob/master/src/main/resources/archetype-resources/pom.xml[pom] has recent versions of:
-** https://github.com/google/guava[Guava]
-** http://www.slf4j.org/[SLF4J] with http://logback.qos.ch/[Logback]
-** JUnit Jupiter.
+* **CLI-focused**: Designed specifically for command-line applications using PicoCLI
+* **Modern Java**: Uses Java 17 with recent compiler and surefire plugin versions
+* **Shade Plugin**: Configured to create executable JARs with all dependencies
+* The generated `pom.xml` includes recent versions of:
+** https://picocli.info/[PicoCLI] - Command line interface framework
+** https://github.com/google/guava[Guava] - Google's core libraries
+** http://www.slf4j.org/[SLF4J] with http://logback.qos.ch/[Logback] - Logging framework
+** https://junit.org/junit5/[JUnit Jupiter] - Testing framework
+** https://site.mockito.org/[Mockito] - Mocking framework for tests
 * The project contains:
-** a starter https://github.com/oliviercailloux/java-archetype/blob/master/src/main/resources/archetype-resources/src/main/java/App.java[class] with a main
+** a starter CLI https://github.com/oliviercailloux/java-archetype/blob/master/src/main/resources/archetype-resources/src/main/java/App.java[class] with PicoCLI integration
 ** a JUnit test https://github.com/oliviercailloux/java-archetype/blob/master/src/main/resources/archetype-resources/src/test/java/MyTests.java[case]
 ** a configuration https://github.com/oliviercailloux/java-archetype/blob/master/src/main/resources/archetype-resources/src/main/resources/logback.xml[file] for Logback
 ** a https://github.com/oliviercailloux/java-archetype/blob/master/src/main/resources/archetype-resources/.gitignore[.gitignore] file.
 
+== Best Practices for Using This Archetype
+
+=== Installing the Archetype Locally
+
+To use this archetype as your go-to CLI template, install it locally:
+
+1. Clone this repository: `git clone <your-repo-url>`
+2. Install to your local Maven repository: `mvn clean install`
+3. The archetype is now available for use with the commands above
+
+=== Creating New CLI Projects
+
+For each new CLI project:
+
+1. Navigate to your projects directory
+2. Run: `mvn archetype:generate -DarchetypeGroupId=com.leeharkness -DarchetypeArtifactId=java-archetype -DarchetypeVersion=0.0.14-SNAPSHOT -DinteractiveMode=false -DgroupId=com.yourcompany -DartifactId=your-cli-tool`
+3. `cd your-cli-tool`
+4. Start coding! The generated project is ready to build and run
+
+=== Building and Running
+
+After generating a project:
+
+* Build: `mvn clean package`
+* Run: `java -jar target/your-cli-tool-1.0.0-SNAPSHOT.jar [args]`
+* Run with Maven: `mvn exec:java -Dexec.args="[args]"`
+
+=== Customizing the Archetype
+
+To modify this archetype for your needs:
+
+1. Edit files in `src/main/resources/archetype-resources/`
+2. Update version numbers in the generated POM template
+3. Add/remove dependencies as needed
+4. Reinstall with `mvn clean install`
+
 == How it works
 
-* I published this project to http://search.maven.org/#search|ga|1|g:io.github.oliviercailloux%20a:java-archetype[Maven Central] (source on Maven Central visible https://repo.maven.apache.org/maven2/io/github/oliviercailloux/java-archetype/[here]).
-* A few days later, the https://repo1.maven.org/maven2/archetype-catalog.xml[remote archetypes catalog] indexed it.
-* When starting the https://maven.apache.org/archetype/maven-archetype-plugin/generate-mojo.html[`archetype:generate`] goal, maven uses the `org.apache.maven.plugins:maven-archetype-plugin` plugin, which (by default) searches for archetypes in the remote archetypes catalog (see http://maven.apache.org/archetype/maven-archetype-plugin/specification/archetype-catalog.html[Archetype Catalog]; you can also try `mvn org.apache.maven.plugins:maven-archetype-plugin:3.2.1:generate -DarchetypeCatalog=local` or `mvn org.apache.maven.plugins:maven-archetype-plugin:3.2.1:generate -DarchetypeCatalog=internal` for comparison).
-* One week later than publication, the Maven http://maven.apache.org/repository/central-index.html[Central Index] was updated. (Thus, there might be a delay between availability from maven command line invocation and availability within https://github.com/oliviercailloux/Java-Archetype#from-eclipse[Eclipse], depending on the way you access archetypes.)
+This is a fork of Olivier Cailloux's excellent java-archetype, customized specifically for CLI development. The key differences:
+
+* **PicoCLI Integration**: Pre-configured with PicoCLI for command-line argument parsing
+* **Shade Plugin**: Creates executable JARs with all dependencies included
+* **Mockito**: Added for comprehensive testing support
+* **CLI-focused Examples**: Starter code demonstrates CLI best practices
 
 == Alternatives
 === The official quickstart archetype
