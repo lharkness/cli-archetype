@@ -46,6 +46,7 @@ Projects generated from this archetype have the following characteristics:
 * **Shade Plugin**: Configured to create executable JARs with all dependencies
 * The generated `pom.xml` includes recent versions of:
 ** https://picocli.info/[PicoCLI] - Command line interface framework
+** https://projectlombok.org/[Lombok] - Reduces boilerplate code with annotations
 ** https://github.com/google/guava[Guava] - Google's core libraries
 ** http://www.slf4j.org/[SLF4J] with http://logback.qos.ch/[Logback] - Logging framework
 ** https://junit.org/junit5/[JUnit Jupiter] - Testing framework

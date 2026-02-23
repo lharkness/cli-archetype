@@ -3,17 +3,10 @@ package ${package};
 import java.util.concurrent.Callable;
 
 import picocli.CommandLine.Command;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-
-import picocli.CommandLine;
-import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.concurrent.Callable;
-
+@Slf4j
 @Command(name = "helloworld", mixinStandardHelpOptions = true, version = "helloworld 1.0",
          description = "Prints Hello World and optional text to STDOUT.")
 class App implements Callable<Integer> {
@@ -23,7 +16,13 @@ class App implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception { // your business logic goes here...
+    	log.info("Starting application with text: '{}'", text);
+    	log.debug("This is a debug message that will go to the log file only");
+    	log.warn("This is a warning message");
+    	
     	System.out.println("Hello " + text);
+    	
+    	log.info("Application completed successfully");
     	return 0;
     }
 
